@@ -1,0 +1,10 @@
+{
+  "name": "لوميرا كلينك",
+  "short_name": "لوميرا",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf7f1",
+  "theme_color": "#b6786d",
+  "dir": "rtl",
+  "lang": "ar-JO"
+}
