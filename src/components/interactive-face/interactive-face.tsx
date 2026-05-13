@@ -1,16 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarDays, CheckCircle2, MousePointer2, Sparkles, X } from "lucide-react";
 import { useMemo, useState } from "react";
+import { PremiumButton } from "@/components/ui/premium-button";
 import { faceAreas, getFaceService, type FaceAreaId } from "@/data/services";
 import { formatPriceRange } from "@/lib/utils";
-import { PremiumButton } from "@/components/ui/premium-button";
 
 const hotspotLayers: Record<FaceAreaId, number> = {
   skin: 3,
   cheeks: 7,
-  jawline: 7,
+  jawline: 8,
   forehead: 9,
   underEyes: 10,
   eyebrows: 11,
@@ -19,111 +20,17 @@ const hotspotLayers: Record<FaceAreaId, number> = {
   nose: 14,
 };
 
-function FaceHighlight({ area }: { area: FaceAreaId }) {
-  const base = {
-    initial: { opacity: 0, scale: 0.88 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.92 },
-    transition: { duration: 0.35 },
-  };
-
-  switch (area) {
-    case "nose":
-      return <motion.path {...base} d="M209 212 C198 242 194 272 211 292 C226 270 223 239 214 212" fill="#f1a9a8" opacity="0.5" />;
-    case "lips":
-      return <motion.ellipse {...base} cx="210" cy="357" rx="50" ry="19" fill="#cf6d78" opacity="0.42" />;
-    case "cheeks":
-      return (
-        <motion.g {...base}>
-          <ellipse cx="139" cy="291" rx="48" ry="35" fill="#eaa7a1" opacity="0.38" />
-          <ellipse cx="281" cy="291" rx="48" ry="35" fill="#eaa7a1" opacity="0.38" />
-        </motion.g>
-      );
-    case "jawline":
-      return <motion.path {...base} d="M112 337 C134 442 286 442 308 337" fill="none" stroke="#b6786d" strokeWidth="18" strokeLinecap="round" opacity="0.45" />;
-    case "chin":
-      return <motion.ellipse {...base} cx="210" cy="416" rx="43" ry="29" fill="#d58d83" opacity="0.36" />;
-    case "forehead":
-      return <motion.ellipse {...base} cx="210" cy="146" rx="86" ry="42" fill="#f0b8ae" opacity="0.33" />;
-    case "underEyes":
-      return (
-        <motion.g {...base}>
-          <ellipse cx="157" cy="239" rx="39" ry="14" fill="#b6786d" opacity="0.28" />
-          <ellipse cx="263" cy="239" rx="39" ry="14" fill="#b6786d" opacity="0.28" />
-        </motion.g>
-      );
-    case "eyebrows":
-      return (
-        <motion.g {...base} fill="none" stroke="#b6786d" strokeLinecap="round" strokeWidth="12" opacity="0.42">
-          <path d="M125 197 C150 180 176 181 193 193" />
-          <path d="M227 193 C246 181 275 181 297 197" />
-        </motion.g>
-      );
-    case "skin":
-      return <motion.ellipse {...base} cx="210" cy="278" rx="128" ry="206" fill="#f6d7d7" opacity="0.2" />;
-  }
-}
-
-function FaceSvg({ activeArea }: { activeArea: FaceAreaId | null }) {
-  return (
-    <svg viewBox="0 0 420 560" role="img" aria-label="رسم تفاعلي أنيق للوجه" className="h-full w-full">
-      <defs>
-        <linearGradient id="skin" x1="115" x2="306" y1="70" y2="475" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#fff4ee" />
-          <stop offset="0.48" stopColor="#f5c9bc" />
-          <stop offset="1" stopColor="#df9d90" />
-        </linearGradient>
-        <linearGradient id="hair" x1="90" x2="333" y1="50" y2="498" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#4c3834" />
-          <stop offset="1" stopColor="#251b19" />
-        </linearGradient>
-        <linearGradient id="lip" x1="165" x2="255" y1="337" y2="379" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#e69aa1" />
-          <stop offset="1" stopColor="#a94f59" />
-        </linearGradient>
-        <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="24" stdDeviation="22" floodColor="#6c4339" floodOpacity="0.18" />
-        </filter>
-      </defs>
-
-      <path
-        d="M94 273 C74 123 133 42 210 42 C287 42 346 123 326 273 C315 383 282 493 210 502 C138 493 105 383 94 273Z"
-        fill="url(#hair)"
-        opacity="0.96"
-      />
-      <path
-        d="M107 252 C111 121 153 72 210 72 C267 72 309 121 313 252 C317 382 271 458 210 458 C149 458 103 382 107 252Z"
-        fill="url(#skin)"
-        filter="url(#softShadow)"
-      />
-      <path d="M120 245 C109 218 101 177 126 119 C146 74 187 61 210 62 C167 86 140 133 133 214 C128 271 129 347 151 403 C124 372 111 315 120 245Z" fill="#3b2b29" opacity="0.22" />
-      <path d="M300 245 C311 218 319 177 294 119 C274 74 233 61 210 62 C253 86 280 133 287 214 C292 271 291 347 269 403 C296 372 309 315 300 245Z" fill="#3b2b29" opacity="0.22" />
-
-      <AnimatePresence>{activeArea ? <FaceHighlight key={activeArea} area={activeArea} /> : null}</AnimatePresence>
-
-      <ellipse cx="148" cy="285" rx="34" ry="22" fill="#df8b86" opacity="0.2" />
-      <ellipse cx="272" cy="285" rx="34" ry="22" fill="#df8b86" opacity="0.2" />
-
-      <path d="M124 197 C148 178 176 180 194 193" fill="none" stroke="#4c3834" strokeWidth="8" strokeLinecap="round" />
-      <path d="M226 193 C245 180 274 178 298 197" fill="none" stroke="#4c3834" strokeWidth="8" strokeLinecap="round" />
-      <path d="M135 229 C151 217 173 217 188 229" fill="none" stroke="#332423" strokeWidth="5" strokeLinecap="round" />
-      <path d="M232 229 C249 217 271 217 286 229" fill="none" stroke="#332423" strokeWidth="5" strokeLinecap="round" />
-      <circle cx="164" cy="227" r="5" fill="#2d201f" opacity="0.88" />
-      <circle cx="256" cy="227" r="5" fill="#2d201f" opacity="0.88" />
-
-      <path d="M209 213 C200 245 194 273 211 293 C226 272 221 244 214 213" fill="none" stroke="#b9786c" strokeWidth="5" strokeLinecap="round" opacity="0.58" />
-      <path d="M192 304 C201 310 219 310 228 304" fill="none" stroke="#ad6b62" strokeWidth="4" strokeLinecap="round" opacity="0.45" />
-
-      <path d="M164 352 C180 333 198 342 210 352 C222 342 241 333 256 352 C241 375 181 375 164 352Z" fill="url(#lip)" />
-      <path d="M172 354 C191 363 229 363 248 354" fill="none" stroke="#7d333b" strokeWidth="3" strokeLinecap="round" opacity="0.45" />
-
-      <path d="M139 381 C165 440 255 440 281 381" fill="none" stroke="#8d564d" strokeWidth="4" strokeLinecap="round" opacity="0.24" />
-      <path d="M174 430 C195 446 226 446 246 430" fill="none" stroke="#8d564d" strokeWidth="4" strokeLinecap="round" opacity="0.2" />
-
-      <path d="M117 111 C150 58 260 47 302 122 C283 93 248 83 210 85 C170 86 139 94 117 111Z" fill="#fffdf9" opacity="0.13" />
-    </svg>
-  );
-}
+const highlightStyles: Record<FaceAreaId, string> = {
+  nose: "left-[45.5%] top-[35%] h-[26%] w-[9%] rounded-[44%]",
+  lips: "left-[39.5%] top-[60%] h-[10%] w-[21%] rounded-[999px]",
+  cheeks: "left-[26%] top-[42%] h-[24%] w-[48%] rounded-[999px]",
+  jawline: "left-[29%] top-[64%] h-[22%] w-[42%] rounded-b-[999px]",
+  chin: "left-[42%] top-[71%] h-[12%] w-[16%] rounded-[999px]",
+  forehead: "left-[35%] top-[9%] h-[18%] w-[30%] rounded-[999px]",
+  underEyes: "left-[31%] top-[33%] h-[10%] w-[38%] rounded-[999px]",
+  eyebrows: "left-[29%] top-[22%] h-[10%] w-[42%] rounded-[999px]",
+  skin: "left-[25%] top-[8%] h-[80%] w-[50%] rounded-[45%]",
+};
 
 export function InteractiveFace() {
   const [selected, setSelected] = useState<FaceAreaId | null>(null);
@@ -145,21 +52,46 @@ export function InteractiveFace() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-      <div className="relative overflow-hidden rounded-[36px] border border-line bg-warm-white/72 p-4 shadow-luxury md:p-7">
-        <div className="absolute inset-x-8 top-7 h-px bg-gradient-to-l from-transparent via-rosegold/45 to-transparent" />
+      <div className="relative overflow-hidden rounded-[38px] border border-rosegold/20 bg-[linear-gradient(135deg,rgba(255,253,249,0.92),rgba(244,226,216,0.66))] p-3 shadow-luxury md:p-5">
+        <div className="absolute inset-x-8 top-5 z-10 h-px bg-gradient-to-l from-transparent via-rosegold/55 to-transparent" />
+        <div className="absolute -left-16 top-10 size-44 rounded-full bg-blush/35 blur-3xl" />
+        <div className="absolute -right-16 bottom-10 size-52 rounded-full bg-sage-soft/70 blur-3xl" />
+
         <motion.div
-          className="relative mx-auto aspect-[3/4] max-h-[680px] max-w-[520px]"
+          className="relative mx-auto aspect-video max-w-[760px] overflow-hidden rounded-[32px] bg-charcoal shadow-[0_28px_80px_rgba(70,48,42,0.22)]"
           animate={{
-            scale: currentArea ? 1.045 : 1,
-            x: currentArea ? (50 - currentArea.focus.x) * 2.1 : 0,
-            y: currentArea ? (50 - currentArea.focus.y) * 2.1 : 0,
+            scale: currentArea ? 1.085 : 1,
+            x: currentArea ? (50 - currentArea.focus.x) * 1.35 : 0,
+            y: currentArea ? (50 - currentArea.focus.y) * 1.35 : 0,
           }}
-          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+          transition={{ type: "spring", stiffness: 105, damping: 22 }}
           style={{
             transformOrigin: activeArea ? `${activeArea.focus.x}% ${activeArea.focus.y}%` : "50% 50%",
           }}
         >
-          <FaceSvg activeArea={(selected ?? hovered) as FaceAreaId | null} />
+          <Image
+            src="/images/interactive-facial-map.jpg"
+            alt="خريطة وجه تفاعلية لخدمات تجميل الوجه في لوميرا كلينك"
+            fill
+            sizes="(min-width: 1024px) 58vw, 100vw"
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,transparent_0,rgba(48,41,39,0.02)_45%,rgba(48,41,39,0.32)_100%)]" />
+          <div className="absolute inset-0 ring-1 ring-inset ring-warm-white/35" />
+
+          <AnimatePresence>
+            {activeArea ? (
+              <motion.div
+                key={activeArea.id}
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+                className={`pointer-events-none absolute ${highlightStyles[activeArea.id]} border border-warm-white/70 bg-rosegold/18 shadow-[0_0_45px_rgba(246,215,215,0.74),inset_0_0_28px_rgba(255,253,249,0.34)] backdrop-blur-[1px]`}
+              />
+            ) : null}
+          </AnimatePresence>
 
           {orderedAreas.map((area) => (
             <button
@@ -181,27 +113,27 @@ export function InteractiveFace() {
               onClick={() => setSelected(area.id)}
             >
               <span
-                className={`absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-warm-white shadow-[0_0_0_6px_rgba(182,120,109,0.15)] ring-2 ring-rosegold/60 transition ${
-                  selected === area.id || hovered === area.id ? "scale-125 opacity-100" : "opacity-75"
+                className={`absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-warm-white/80 bg-rosegold/85 shadow-[0_0_0_7px_rgba(255,253,249,0.22),0_0_24px_rgba(182,120,109,0.5)] transition duration-300 group-hover:scale-125 group-hover:opacity-100 group-focus-visible:scale-125 group-focus-visible:opacity-100 ${
+                  selected === area.id || hovered === area.id ? "scale-125 opacity-100" : "opacity-0"
                 } ${area.id === "skin" ? "top-[28%]" : ""}`}
               />
-              <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full bg-charcoal px-3 py-1.5 text-xs font-black text-warm-white opacity-0 shadow-soft transition group-hover:opacity-100 group-focus-visible:opacity-100">
+              <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-warm-white/20 bg-charcoal/90 px-3 py-1.5 text-xs font-black text-warm-white opacity-0 shadow-soft backdrop-blur transition group-hover:opacity-100 group-focus-visible:opacity-100">
                 {area.label}
               </span>
             </button>
           ))}
         </motion.div>
 
-        <div className="mt-4 flex flex-wrap justify-center gap-2">
+        <div className="relative z-10 mt-4 flex flex-wrap justify-center gap-2">
           {faceAreas.map((area) => (
             <button
               key={area.id}
               type="button"
               onClick={() => setSelected(area.id)}
-              className={`focus-visible-ring rounded-full px-3 py-2 text-xs font-black transition ${
+              className={`focus-visible-ring rounded-full border px-3 py-2 text-xs font-black transition duration-300 ${
                 selected === area.id
-                  ? "bg-charcoal text-warm-white"
-                  : "bg-ivory text-mocha hover:bg-blush-soft hover:text-charcoal"
+                  ? "border-charcoal bg-charcoal text-warm-white shadow-soft"
+                  : "border-line bg-warm-white/76 text-mocha backdrop-blur hover:border-rosegold/45 hover:bg-blush-soft hover:text-charcoal"
               }`}
             >
               {area.label}

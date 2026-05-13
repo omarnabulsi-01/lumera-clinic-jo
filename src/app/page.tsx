@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   ArrowLeft,
   CalendarDays,
@@ -25,6 +26,12 @@ import { testimonials } from "@/data/testimonials";
 
 const featuredServices = services.filter((service) => service.featured).slice(0, 6);
 
+const heroStats = [
+  ["٢٤/٧", "حجز واستقبال"],
+  ["١٨+", "خدمة وجه وبشرة"],
+  ["عمّان", "توقيت الأردن"],
+];
+
 const whyItems: { title: string; description: string; Icon: LucideIcon }[] = [
   {
     title: "تقييم طبي أولًا",
@@ -50,27 +57,45 @@ const whyItems: { title: string; description: string; Icon: LucideIcon }[] = [
 
 function HeroFaceVisual() {
   return (
-    <div className="pointer-events-none absolute inset-y-8 left-[-10%] hidden w-[54%] opacity-80 lg:block">
-      <svg viewBox="0 0 520 640" className="h-full w-full" aria-hidden="true">
-        <defs>
-          <linearGradient id="heroSkin" x1="130" x2="390" y1="80" y2="540">
-            <stop stopColor="#fff7f2" />
-            <stop offset="0.55" stopColor="#f4c8bc" />
-            <stop offset="1" stopColor="#c77f72" />
-          </linearGradient>
-          <linearGradient id="heroHair" x1="105" x2="420" y1="60" y2="590">
-            <stop stopColor="#614741" />
-            <stop offset="1" stopColor="#241a18" />
-          </linearGradient>
-        </defs>
-        <path d="M128 335 C92 148 169 52 260 52 C351 52 428 148 392 335 C374 493 327 591 260 601 C193 591 146 493 128 335Z" fill="url(#heroHair)" opacity="0.92" />
-        <path d="M150 306 C154 150 198 92 260 92 C322 92 366 150 370 306 C374 452 329 540 260 540 C191 540 146 452 150 306Z" fill="url(#heroSkin)" opacity="0.92" />
-        <path d="M171 250 C206 226 238 230 252 250" fill="none" stroke="#3b2a27" strokeWidth="7" strokeLinecap="round" opacity="0.55" />
-        <path d="M269 250 C287 230 321 226 349 250" fill="none" stroke="#3b2a27" strokeWidth="7" strokeLinecap="round" opacity="0.55" />
-        <path d="M244 281 C229 328 230 364 262 385 C288 361 286 327 274 281" fill="none" stroke="#9f665d" strokeWidth="6" strokeLinecap="round" opacity="0.45" />
-        <path d="M201 426 C228 399 250 417 260 426 C271 417 294 399 320 426 C296 459 225 459 201 426Z" fill="#b65f68" opacity="0.62" />
-        <path d="M174 342 C205 373 222 392 260 392 C298 392 315 373 346 342" fill="none" stroke="#b6786d" strokeWidth="54" strokeLinecap="round" opacity="0.1" />
-      </svg>
+    <Reveal delay={0.12} className="relative">
+      <div className="absolute -inset-4 rounded-[46px] bg-[radial-gradient(circle_at_50%_20%,rgba(255,253,249,0.92),rgba(246,215,215,0.36)_38%,rgba(182,120,109,0.16)_72%,transparent_100%)] blur-2xl" />
+      <div className="relative mx-auto aspect-[4/5] max-h-[720px] max-w-[620px] overflow-hidden rounded-[42px] border border-warm-white/70 bg-charcoal shadow-[0_36px_100px_rgba(73,52,45,0.24)]">
+        <Image
+          src="/images/luxury-clinic-hero-face.jpg"
+          alt="امرأة بإطلالة راقية داخل عيادة تجميل فاخرة"
+          fill
+          priority
+          sizes="(min-width: 1024px) 48vw, 100vw"
+          className="object-cover object-[50%_42%]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(48,41,39,0.34),rgba(48,41,39,0.04)_38%,rgba(255,253,249,0.08)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_54%_29%,transparent_0,rgba(255,253,249,0.05)_32%,rgba(48,41,39,0.34)_100%)]" />
+        <div className="absolute inset-x-6 top-6 flex items-center justify-between gap-3">
+          <span className="rounded-full border border-warm-white/35 bg-warm-white/18 px-4 py-2 text-xs font-black text-warm-white shadow-soft backdrop-blur-xl">
+            تقييم وجه متكامل
+          </span>
+          <span className="rounded-full border border-warm-white/35 bg-charcoal/35 px-4 py-2 text-xs font-black text-warm-white shadow-soft backdrop-blur-xl">
+            عمّان
+          </span>
+        </div>
+        <div className="absolute inset-x-5 bottom-5 rounded-[28px] border border-warm-white/28 bg-warm-white/20 p-5 text-warm-white shadow-luxury backdrop-blur-2xl">
+          <p className="text-xs font-black text-blush">توازن · نضارة · خصوصية</p>
+          <p className="mt-2 text-2xl font-black">تجربة عناية تبدأ من ملامحك.</p>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+function HeroStats({ className = "" }: { className?: string }) {
+  return (
+    <div className={`mt-10 grid gap-3 sm:grid-cols-3 ${className}`}>
+      {heroStats.map(([value, label]) => (
+        <div key={label} className="rounded-[24px] border border-line bg-warm-white/68 p-5 shadow-soft backdrop-blur">
+          <p className="arabic-number text-3xl font-black text-charcoal">{value}</p>
+          <p className="mt-1 text-sm font-bold text-mocha">{label}</p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -79,8 +104,8 @@ export default function HomePage() {
   return (
     <>
       <section className="medical-gradient noise-layer relative isolate overflow-hidden border-b border-line">
-        <HeroFaceVisual />
-        <div className="luxury-container relative z-10 flex min-h-[calc(88svh-80px)] items-center py-16 md:py-20">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(245,215,215,0.72),transparent_34%),radial-gradient(circle_at_18%_72%,rgba(237,243,239,0.8),transparent_34%)]" />
+        <div className="luxury-container relative z-10 grid min-h-[calc(90svh-80px)] items-center gap-10 py-14 md:py-20 lg:grid-cols-[0.95fr_1.05fr]">
           <Reveal className="max-w-4xl">
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-rosegold/25 bg-warm-white/70 px-4 py-2 text-sm font-black text-rosegold shadow-soft">
               <Sparkles className="size-4" aria-hidden="true" />
@@ -100,19 +125,10 @@ export default function HomePage() {
                 جرّبي استشارة الوجه
               </PremiumButton>
             </div>
-            <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              {[
-                ["٢٤/٧", "حجز واستقبال"],
-                ["١٨+", "خدمة وجه وبشرة"],
-                ["عمّان", "توقيت الأردن"],
-              ].map(([value, label]) => (
-                <div key={label} className="rounded-[24px] border border-line bg-warm-white/68 p-5 shadow-soft backdrop-blur">
-                  <p className="arabic-number text-3xl font-black text-charcoal">{value}</p>
-                  <p className="mt-1 text-sm font-bold text-mocha">{label}</p>
-                </div>
-              ))}
-            </div>
+            <HeroStats className="hidden sm:grid" />
           </Reveal>
+          <HeroFaceVisual />
+          <HeroStats className="sm:hidden" />
         </div>
       </section>
 

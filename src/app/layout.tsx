@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { MobileBookingCta } from "@/components/mobile-booking-cta";
 import { clinic } from "@/data/clinic";
 import "./globals.css";
 
@@ -58,6 +59,7 @@ export default function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
+        <MobileBookingCta />
       </body>
     </html>
   );

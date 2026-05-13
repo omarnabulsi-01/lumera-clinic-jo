@@ -12,7 +12,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line/70 bg-warm-white/82 backdrop-blur-2xl">
+    <header className="sticky top-0 z-50 border-b border-line/70 bg-warm-white/86 shadow-[0_14px_40px_rgba(78,54,46,0.06)] backdrop-blur-2xl">
       <div className="luxury-container flex min-h-20 items-center justify-between gap-5">
         <Link href="/" className="focus-visible-ring flex items-center gap-3 rounded-full" onClick={() => setOpen(false)}>
           <span className="grid size-12 place-items-center rounded-full bg-charcoal text-warm-white shadow-soft">

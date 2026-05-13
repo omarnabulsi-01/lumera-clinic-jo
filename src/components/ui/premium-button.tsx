@@ -11,9 +11,9 @@ type PremiumButtonProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const variants = {
-  primary: "bg-rosegold text-warm-white shadow-soft hover:bg-rosegold-dark",
-  secondary: "border border-line bg-warm-white text-charcoal hover:border-rosegold/60 hover:text-rosegold",
-  ghost: "bg-warm-white/12 text-charcoal ring-1 ring-line/80 hover:bg-warm-white",
+  primary: "bg-[linear-gradient(135deg,#b6786d,#d7a090)] text-warm-white shadow-soft hover:shadow-luxury",
+  secondary: "border border-line bg-warm-white/86 text-charcoal shadow-[inset_0_1px_0_rgba(255,255,255,0.78)] hover:border-rosegold/60 hover:text-rosegold",
+  ghost: "bg-warm-white/14 text-charcoal ring-1 ring-line/80 backdrop-blur hover:bg-warm-white",
   dark: "bg-charcoal text-warm-white hover:bg-mocha",
 };
 
