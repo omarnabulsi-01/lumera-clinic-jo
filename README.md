@@ -135,25 +135,32 @@ To change a hotspot, edit the `faceAreas` array:
 - `focus` controls the animated focus point.
 - `hotspot` controls the clickable area position and size.
 
-## Backend And Email Integration Notes
+## Form Submission Notes
 
-The booking and contact forms are frontend-only by design:
+The booking and contact forms submit to Formspree:
 
 ```bash
 src/components/forms/booking-form.tsx
 src/components/forms/contact-form.tsx
+src/lib/formspree.ts
 ```
 
-They validate data locally and do not store real medical or patient data.
+They validate data in the browser for immediate feedback, submit to `https://formspree.io/f/xbdweldd`, and do not use local storage or a database for patient data.
 
-For production submission, add a secure Next.js server action or API route that:
+Current production fields include:
 
-- Validates data again on the server
-- Rate-limits requests
-- Keeps email/CRM/API secrets on the server
-- Avoids storing medical details without explicit consent
-- Sends notifications through a trusted provider
-- Logs only what is necessary
+- `fullName`
+- `phone`
+- `email`
+- `service`
+- `preferredDate`
+- `preferredTime`
+- `message`
+- `source`
+- `website`
+- `formType`
+
+Avoid asking users to submit sensitive medical details through public forms. If a deeper booking workflow is added later, add server-side validation, rate limiting, explicit consent, and a medical-grade data handling policy.
 
 ## Important Medical And Legal Notes
 
@@ -179,8 +186,8 @@ public                   # Static public assets
 
 ## Customization Ideas
 
-- Add a real Google Maps embed URL.
-- Connect booking to an email service or CRM.
-- Replace placeholder gallery cards with approved real photos.
+- Replace the approximate Abdoun map with the official clinic location after it is approved.
+- Connect booking to a dedicated CRM only after privacy and consent policies are ready.
+- Replace mockup gallery cards with approved real photos only after written consent.
 - Add a secure admin interface for services and prices.
 - Add analytics after updating the privacy policy.

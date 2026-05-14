@@ -25,11 +25,13 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
   background: #fbf7f1;
 }
 
 body {
   min-height: 100vh;
+  overflow-x: clip;
   direction: rtl;
   color: #302927;
   background:

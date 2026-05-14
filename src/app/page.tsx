@@ -6,19 +6,21 @@ import {
   ChevronDown,
   Gem,
   HeartPulse,
-  MapPin,
   ShieldCheck,
   Sparkles,
   Star,
   type LucideIcon,
 } from "lucide-react";
+import { BeforeAfterGallery } from "@/components/before-after-gallery";
 import { DoctorCard } from "@/components/doctor-card";
+import { GoogleMapCard } from "@/components/google-map-card";
 import { InteractiveFace } from "@/components/interactive-face/interactive-face";
 import { Reveal } from "@/components/reveal";
 import { SafetyNotes } from "@/components/safety-notes";
 import { SectionHeader } from "@/components/section-header";
 import { ServiceCard } from "@/components/service-card";
 import { PremiumButton } from "@/components/ui/premium-button";
+import { WhatsAppButton } from "@/components/whatsapp-button";
 import { clinic } from "@/data/clinic";
 import { doctors } from "@/data/doctors";
 import { faqs } from "@/data/faqs";
@@ -28,9 +30,9 @@ import { testimonials } from "@/data/testimonials";
 const featuredServices = services.filter((service) => service.featured).slice(0, 6);
 
 const heroStats = [
-  ["٢٤/٧", "حجز واستقبال"],
+  ["24/7", "حجز واستقبال"],
   ["١٨+", "خدمة وجه وبشرة"],
-  ["عمّان", "توقيت الأردن"],
+  ["Abdoun", "Jordan Time"],
 ];
 
 const whyItems: { title: string; description: string; Icon: LucideIcon }[] = [
@@ -46,7 +48,7 @@ const whyItems: { title: string; description: string; Icon: LucideIcon }[] = [
   },
   {
     title: "خصوصية عالية",
-    description: "لا تُستخدم صور حقيقية دون موافقة صريحة، ونموذج الحجز لا يخزن بيانات طبية.",
+    description: "لا تُستخدم صور حقيقية دون موافقة صريحة، ونموذج الحجز لا يخزن بيانات المرضى محليًا.",
     Icon: HeartPulse,
   },
   {
@@ -248,7 +250,7 @@ export default function HomePage() {
               align="start"
               eyebrow="خدمات مميزة"
               title="أسعار تقريبية بالدينار الأردني قبل الاستشارة."
-              description="اختاري الخدمة المناسبة وابدئي بنموذج حجز آمن للواجهة الأمامية فقط."
+              description="اختاري الخدمة المناسبة وابدئي بنموذج حجز متصل بفريق لوميرا مع الحفاظ على الخصوصية."
               className="max-w-2xl"
             />
             <PremiumButton href="/services" variant="secondary" icon={<ArrowLeft className="size-4" aria-hidden="true" />}>
@@ -302,24 +304,11 @@ export default function HomePage() {
         <div className="luxury-container">
           <SectionHeader
             eyebrow="قبل وبعد"
-            title="مساحة جاهزة لنتائج حقيقية بعد الموافقة."
-            description="نعرض حاليًا بطاقات توضيحية فقط، لأن خصوصية العميلات جزء من فخامة التجربة."
+            title="نماذج فاخرة توضح اتجاهات العناية دون صور مرضى."
+            description="هذه البطاقات mockups جمالية فقط، مصممة للحفاظ على الخصوصية وعدم الإيحاء بنتائج طبية حقيقية."
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {["توازن الشفاه", "نضارة البشرة", "تحديد الفك"].map((item, index) => (
-              <Reveal key={item} delay={index * 0.08} className="rounded-[30px] border border-line bg-ivory p-5 shadow-soft">
-                <div className="grid h-64 grid-cols-2 gap-3">
-                  <div className="rounded-[24px] bg-gradient-to-br from-pearl to-warm-white p-4">
-                    <span className="rounded-full bg-warm-white px-3 py-1 text-xs font-black text-mocha">قبل</span>
-                  </div>
-                  <div className="rounded-[24px] bg-gradient-to-br from-blush-soft to-sage-soft p-4">
-                    <span className="rounded-full bg-warm-white px-3 py-1 text-xs font-black text-mocha">بعد</span>
-                  </div>
-                </div>
-                <h3 className="mt-5 text-xl font-black text-charcoal">{item}</h3>
-                <p className="mt-2 text-sm leading-7 text-mocha">بطاقة مكانية قابلة للاستبدال بصورة حقيقية بعد موافقة مكتوبة.</p>
-              </Reveal>
-            ))}
+          <div className="mt-12">
+            <BeforeAfterGallery />
           </div>
         </div>
       </section>
@@ -357,7 +346,7 @@ export default function HomePage() {
           {[
             ["١", "اختيار الخدمة", "ابدئي من كتالوج الخدمات أو الوجه التفاعلي."],
             ["٢", "إرسال الطلب", "أدخلي بيانات التواصل والوقت المفضل."],
-            ["٣", "تأكيد الاستشارة", "يتواصل الفريق لاحقًا عند ربط نظام الحجز."],
+            ["٣", "تأكيد الاستشارة", "يتواصل فريق لوميرا قريبًا لتأكيد الموعد."],
             ["٤", "خطة آمنة", "تتم مناقشة الخيارات والسعر النهائي قبل أي إجراء."],
           ].map(([number, title, description]) => (
             <Reveal key={number} className="rounded-[30px] border border-line bg-warm-white/82 p-6 shadow-soft">
@@ -397,28 +386,22 @@ export default function HomePage() {
             <p className="text-sm font-black text-blush">تواصل وموقع العيادة</p>
             <h2 className="mt-3 text-3xl font-black md:text-5xl">عمّان، الأردن · متاحون طوال الأسبوع.</h2>
             <div className="mt-8 grid gap-4 text-sm text-pearl">
-              <p className="arabic-number" dir="ltr">{clinic.phone}</p>
-              <p>{clinic.email}</p>
-              <p>{clinic.workingHours} · {clinic.timezone}</p>
+              <a className="arabic-number transition hover:text-blush" href={clinic.phoneHref} dir="ltr">{clinic.phone}</a>
+              <a className="transition hover:text-blush" href={clinic.emailHref}>{clinic.email}</a>
+              <p dir="ltr">{clinic.address}</p>
+              <p dir="ltr">{clinic.workingHours} · {clinic.timezone}</p>
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <PremiumButton href="/booking" icon={<CalendarDays className="size-4" aria-hidden="true" />}>
                 احجزي الآن
               </PremiumButton>
+              <WhatsAppButton label="استشارة سريعة عبر واتساب" variant="dark" />
               <PremiumButton href="/contact" variant="ghost">
                 صفحة التواصل
               </PremiumButton>
             </div>
           </div>
-          <div className="min-h-72 rounded-[30px] border border-warm-white/12 bg-warm-white/8 p-5">
-            <div className="flex h-full min-h-64 flex-col items-center justify-center rounded-[24px] border border-dashed border-blush/35 bg-warm-white/6 text-center">
-              <MapPin className="mb-4 size-10 text-blush" aria-hidden="true" />
-              <p className="text-xl font-black">خريطة عمّان</p>
-              <p className="mt-2 max-w-sm text-sm leading-7 text-pearl">
-                مساحة جاهزة لربط Google Maps عند إضافة رابط الموقع الدقيق.
-              </p>
-            </div>
-          </div>
+          <GoogleMapCard tone="dark" />
         </div>
       </section>
     </>

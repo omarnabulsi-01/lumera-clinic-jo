@@ -2,17 +2,18 @@ import type { Metadata, Viewport } from "next";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { MobileBookingCta } from "@/components/mobile-booking-cta";
+import { FloatingWhatsAppButton } from "@/components/whatsapp-button";
 import { clinic } from "@/data/clinic";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(clinic.siteUrl),
   title: {
-    default: `${clinic.brandName} | عيادة تجميل في عمّان`,
+    default: `${clinic.brandName} | عيادة تجميل في عبدون`,
     template: `%s | ${clinic.brandName}`,
   },
   description:
-    "عيادة تجميل وجه وبشرة فاخرة في عمّان تقدم الفيلر، البوتوكس، الليزر، الهيدرافيشل، واستشارات تجميل الوجه غير الجراحي.",
+    "عيادة تجميل وجه وبشرة فاخرة في Abdoun, Amman, Jordan تقدم الفيلر، البوتوكس، الليزر، الهيدرافيشل، واستشارات تجميل الوجه غير الجراحي.",
   keywords: clinic.keywords,
   applicationName: clinic.brandName,
   authors: [{ name: clinic.brandName }],
@@ -26,9 +27,9 @@ export const metadata: Metadata = {
     locale: "ar_JO",
     url: clinic.siteUrl,
     siteName: clinic.brandName,
-    title: `${clinic.brandName} | عيادة تجميل في عمّان`,
+    title: `${clinic.brandName} | عيادة تجميل في عبدون`,
     description:
-      "تجربة عربية فاخرة لحجز واستكشاف خدمات تجميل الوجه غير الجراحي في الأردن.",
+      "تجربة عربية فاخرة لحجز واستكشاف خدمات تجميل الوجه غير الجراحي في Abdoun, Amman, Jordan.",
   },
   robots: {
     index: true,
@@ -59,6 +60,7 @@ export default function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
+        <FloatingWhatsAppButton />
         <MobileBookingCta />
       </body>
     </html>

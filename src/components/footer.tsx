@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock, Mail, MapPin, Phone, Sparkles } from "lucide-react";
+import { Clock, Mail, MapPin, MessageCircle, Phone, Sparkles } from "lucide-react";
 import { clinic, legalNotes, navigation } from "@/data/clinic";
 import { services } from "@/data/services";
 
@@ -68,19 +68,25 @@ export function Footer() {
           <ul className="mt-4 grid gap-4 text-sm text-pearl">
             <li className="flex items-center gap-3">
               <Phone className="size-4 text-blush" aria-hidden="true" />
-              <a className="arabic-number transition hover:text-blush" href={`tel:${clinic.phone.replaceAll(" ", "")}`} dir="ltr">
+              <a className="arabic-number transition hover:text-blush" href={clinic.phoneHref} dir="ltr">
                 {clinic.phone}
               </a>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="size-4 text-blush" aria-hidden="true" />
-              <a className="transition hover:text-blush" href={`mailto:${clinic.email}`}>
+              <a className="transition hover:text-blush" href={clinic.emailHref}>
                 {clinic.email}
               </a>
             </li>
             <li className="flex items-center gap-3">
+              <MessageCircle className="size-4 text-blush" aria-hidden="true" />
+              <a className="transition hover:text-blush" href={clinic.whatsappUrl} target="_blank" rel="noopener noreferrer">
+                تواصل عبر واتساب
+              </a>
+            </li>
+            <li className="flex items-center gap-3">
               <MapPin className="size-4 text-blush" aria-hidden="true" />
-              <span>{clinic.city}</span>
+              <span dir="ltr">{clinic.address}</span>
             </li>
             <li className="flex items-center gap-3">
               <Clock className="size-4 text-blush" aria-hidden="true" />
@@ -92,7 +98,7 @@ export function Footer() {
       <div className="border-t border-warm-white/10 py-5">
         <div className="luxury-container flex flex-col gap-2 text-xs text-pearl sm:flex-row sm:items-center sm:justify-between">
           <p>© ٢٠٢٦ {clinic.brandName}. جميع الحقوق محفوظة.</p>
-          <p>الموقع لا يجمع بيانات طبية حقيقية في النسخة الحالية.</p>
+          <p>تُرسل النماذج بأمان ولا تُخزّن بيانات المرضى محليًا.</p>
         </div>
       </div>
     </footer>

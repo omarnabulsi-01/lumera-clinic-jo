@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarDays, Menu, Phone, Sparkles, X } from "lucide-react";
 import { useState } from "react";
+import { WhatsAppButton } from "@/components/whatsapp-button";
 import { clinic, navigation } from "@/data/clinic";
 import { cn } from "@/lib/utils";
 
@@ -45,12 +46,13 @@ export function Header() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <a
-            href={`tel:${clinic.phone.replaceAll(" ", "")}`}
+            href={clinic.phoneHref}
             className="focus-visible-ring inline-flex items-center gap-2 rounded-full border border-line bg-warm-white px-4 py-3 text-sm font-bold text-charcoal transition hover:border-rosegold/60 hover:text-rosegold"
           >
             <Phone className="size-4" aria-hidden="true" />
             <span className="arabic-number whitespace-nowrap" dir="ltr">{clinic.phone}</span>
           </a>
+          <WhatsAppButton label="واتساب" variant="light" className="min-h-11 px-4 py-2.5" />
           <Link
             href="/booking"
             className="focus-visible-ring inline-flex items-center gap-2 rounded-full bg-rosegold px-5 py-3 text-sm font-black text-warm-white shadow-soft transition hover:-translate-y-0.5 hover:bg-rosegold-dark"
@@ -99,6 +101,7 @@ export function Header() {
               <CalendarDays className="size-4" aria-hidden="true" />
               احجزي موعدًا
             </Link>
+            <WhatsAppButton label="استشارة سريعة عبر واتساب" variant="light" className="mt-1 w-full" />
           </nav>
         </div>
       ) : null}

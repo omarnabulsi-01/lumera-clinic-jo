@@ -77,7 +77,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             <Sparkles className="size-8 text-blush" aria-hidden="true" />
             <h2 className="mt-4 text-2xl font-black">ابدئي باستشارة آمنة.</h2>
             <p className="mt-3 text-sm leading-7 text-pearl">
-              نموذج الحجز واجهة أمامية فقط في هذه النسخة، ولا يخزن بيانات طبية.
+              نموذج الحجز متصل بفريق لوميرا عبر Formspree ولا يخزن بيانات المرضى محليًا.
             </p>
             <PremiumButton href={`/booking?service=${service.slug}`} className="mt-7 w-full" icon={<CalendarDays className="size-4" aria-hidden="true" />}>
               حجز هذه الخدمة

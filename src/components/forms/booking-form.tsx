@@ -1,9 +1,10 @@
 "use client";
 
-import { CalendarDays, CheckCircle2, Send } from "lucide-react";
+import { AlertCircle, CalendarDays, CheckCircle2, LoaderCircle, Send } from "lucide-react";
 import type { FormEvent, ReactNode } from "react";
 import { useState } from "react";
 import { services } from "@/data/services";
+import { FORM_ERROR_MESSAGE, FORM_SUCCESS_MESSAGE, submitFormspreeForm } from "@/lib/formspree";
 import { PremiumButton } from "@/components/ui/premium-button";
 
 type BookingFormValues = {
@@ -17,6 +18,7 @@ type BookingFormValues = {
 };
 
 type BookingErrors = Partial<Record<keyof BookingFormValues, string>>;
+type SubmissionStatus = "idle" | "loading" | "success" | "error";
 
 const initialValues: BookingFormValues = {
   fullName: "",
@@ -66,16 +68,17 @@ export function BookingForm({ initialServiceSlug }: { initialServiceSlug?: strin
     service: services.some((service) => service.slug === initialServiceSlug) ? initialServiceSlug ?? "" : "",
   });
   const [errors, setErrors] = useState<BookingErrors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>("idle");
 
   function updateValue(name: keyof BookingFormValues, value: string) {
     setValues((current) => ({ ...current, [name]: value }));
     setErrors((current) => ({ ...current, [name]: undefined }));
-    setSubmitted(false);
+    setSubmissionStatus("idle");
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     const formData = new FormData(event.currentTarget);
     const submittedValues: BookingFormValues = {
       fullName: String(formData.get("fullName") ?? ""),
@@ -91,17 +94,27 @@ export function BookingForm({ initialServiceSlug }: { initialServiceSlug?: strin
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length > 0) {
-      setSubmitted(false);
+      setSubmissionStatus("idle");
       return;
     }
 
-    // Future integration: send this validated payload to a Next.js server action or API route that rate-limits requests,
-    // protects email/CRM secrets on the server, and avoids storing medical details without explicit consent.
-    setSubmitted(true);
+    setSubmissionStatus("loading");
+
+    try {
+      await submitFormspreeForm(form);
+      setValues(initialValues);
+      setErrors({});
+      setSubmissionStatus("success");
+    } catch {
+      setSubmissionStatus("error");
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="rounded-[34px] border border-line bg-warm-white p-6 shadow-luxury md:p-8" noValidate>
+      <input type="hidden" name="website" value="Lumera Clinic" />
+      <input type="hidden" name="formType" value="Appointment Booking" />
+      <input type="hidden" name="source" value="booking-page" />
       <div className="mb-7 flex items-start gap-4">
         <div className="grid size-12 shrink-0 place-items-center rounded-full bg-rosegold text-warm-white">
           <CalendarDays className="size-5" aria-hidden="true" />
@@ -109,7 +122,7 @@ export function BookingForm({ initialServiceSlug }: { initialServiceSlug?: strin
         <div>
           <h2 className="text-2xl font-black text-charcoal">نموذج حجز موعد</h2>
           <p className="mt-2 text-sm leading-7 text-mocha">
-            النموذج لا يخزن بيانات طبية في هذه النسخة، ويتم التحقق من المدخلات داخل المتصفح فقط.
+            تُرسل بيانات التواصل إلى فريق لوميرا عبر Formspree لتأكيد الموعد، ولا تُخزّن محليًا في الموقع. يرجى تجنب كتابة تفاصيل طبية حساسة أو طارئة عبر النموذج.
           </p>
         </div>
       </div>
@@ -135,7 +148,7 @@ export function BookingForm({ initialServiceSlug }: { initialServiceSlug?: strin
             aria-invalid={Boolean(errors.phone)}
             autoComplete="tel"
             inputMode="tel"
-            placeholder="+962 7 9000 0000"
+            placeholder="+962 7 9101 0766"
           />
         </Field>
 
@@ -213,18 +226,35 @@ export function BookingForm({ initialServiceSlug }: { initialServiceSlug?: strin
         </div>
       </div>
 
-      {submitted ? (
+      {submissionStatus === "success" ? (
         <div className="mt-6 flex gap-3 rounded-[24px] border border-sage/25 bg-sage-soft p-5 text-sm font-bold leading-7 text-charcoal" role="status">
           <CheckCircle2 className="mt-1 size-5 shrink-0 text-sage" aria-hidden="true" />
-          تم التحقق من طلبك محليًا. يمكن ربط إرسال الطلبات بالبريد الإلكتروني أو نظام الحجز لاحقًا بطريقة آمنة.
+          {FORM_SUCCESS_MESSAGE}
+        </div>
+      ) : null}
+
+      {submissionStatus === "error" ? (
+        <div className="mt-6 flex gap-3 rounded-[24px] border border-rosegold/25 bg-blush-soft p-5 text-sm font-bold leading-7 text-rosegold-dark" role="alert">
+          <AlertCircle className="mt-1 size-5 shrink-0" aria-hidden="true" />
+          {FORM_ERROR_MESSAGE}
         </div>
       ) : null}
 
       <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <PremiumButton type="submit" icon={<Send className="size-4" aria-hidden="true" />}>
-          إرسال طلب الحجز
+        <PremiumButton
+          type="submit"
+          disabled={submissionStatus === "loading"}
+          icon={
+            submissionStatus === "loading" ? (
+              <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <Send className="size-4" aria-hidden="true" />
+            )
+          }
+        >
+          {submissionStatus === "loading" ? "جارٍ إرسال الطلب..." : "إرسال طلب الحجز"}
         </PremiumButton>
-        <p className="text-xs leading-6 text-mocha">لن يتم إرسال بيانات حقيقية إلى خادم في النسخة الحالية.</p>
+        <p className="text-xs leading-6 text-mocha">للحالات الطارئة أو التفاصيل الطبية الحساسة، يرجى التواصل مباشرة مع مركز طبي مختص.</p>
       </div>
     </form>
   );

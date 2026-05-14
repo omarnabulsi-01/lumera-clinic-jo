@@ -14,7 +14,7 @@ export function MobileBookingCta() {
           احجزي موعدًا
         </Link>
         <a
-          href={`tel:${clinic.phone.replaceAll(" ", "")}`}
+          href={clinic.phoneHref}
           aria-label="الاتصال بالعيادة"
           className="focus-visible-ring grid size-12 place-items-center rounded-full border border-line bg-ivory text-charcoal"
         >
