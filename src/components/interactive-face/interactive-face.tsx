@@ -75,7 +75,6 @@ export function InteractiveFace() {
             fill
             sizes="(min-width: 1024px) 58vw, 100vw"
             className="object-cover"
-            priority
           />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,transparent_0,rgba(48,41,39,0.02)_45%,rgba(48,41,39,0.32)_100%)]" />
           <div className="absolute inset-0 ring-1 ring-inset ring-warm-white/35" />

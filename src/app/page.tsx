@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   CalendarDays,
   CheckCircle2,
+  ChevronDown,
   Gem,
   HeartPulse,
   MapPin,
@@ -55,6 +56,68 @@ const whyItems: { title: string; description: string; Icon: LucideIcon }[] = [
   },
 ];
 
+function CinematicVideoHero() {
+  return (
+    <section className="relative isolate min-h-[88svh] overflow-hidden bg-charcoal text-warm-white md:min-h-[calc(100svh-80px)]">
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/images/luxury-hero-clinic-blonde.jpg"
+        aria-hidden="true"
+      >
+        <source src="/videos/lumera-cinematic-hero-loop-4k.mp4" type="video/mp4" />
+      </video>
+
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(35,28,27,0.78)_0%,rgba(48,37,35,0.46)_42%,rgba(35,28,27,0.18)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_18%,rgba(215,160,144,0.28),transparent_32%),linear-gradient(180deg,rgba(255,253,249,0.12)_0%,transparent_42%,rgba(255,250,242,0.88)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent via-ivory/70 to-ivory" />
+
+      <div className="luxury-container relative z-10 flex min-h-[88svh] items-center py-24 md:min-h-[calc(100svh-80px)] md:py-28">
+        <Reveal className="max-w-3xl">
+          <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-warm-white/24 bg-warm-white/12 px-4 py-2 text-xs font-black text-blush shadow-soft backdrop-blur-2xl sm:text-sm">
+            <Sparkles className="size-4" aria-hidden="true" />
+            عيادة تجميل الوجه والبشرة في عمّان
+          </p>
+          <h1 className="text-balance text-5xl font-black leading-tight text-warm-white drop-shadow-[0_18px_45px_rgba(0,0,0,0.35)] md:text-7xl lg:text-8xl">
+            جمال هادئ يبدأ من ملامحك
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-9 text-pearl drop-shadow-[0_12px_30px_rgba(0,0,0,0.3)] md:text-2xl md:leading-10">
+            تجربة فاخرة لتجميل الوجه غير الجراحي، بخطط مدروسة توازن بين النعومة، الأمان، والنتائج الطبيعية.
+          </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <PremiumButton href="/booking" icon={<CalendarDays className="size-5" aria-hidden="true" />}>
+              احجزي استشارتك
+            </PremiumButton>
+            <PremiumButton
+              href="#interactive-face"
+              variant="ghost"
+              icon={<Sparkles className="size-5" aria-hidden="true" />}
+              className="border border-warm-white/24 bg-warm-white/12 text-warm-white ring-warm-white/20 hover:bg-warm-white hover:text-charcoal"
+            >
+              استكشفي تجربة الوجه
+            </PremiumButton>
+          </div>
+          <p className="mt-6 text-sm font-bold text-pearl/88">
+            خصوصية عالية · أسعار واضحة · تقييم طبي قبل أي إجراء
+          </p>
+        </Reveal>
+      </div>
+
+      <a
+        href="#brand-intro"
+        aria-label="الانتقال إلى محتوى الصفحة"
+        className="focus-visible-ring absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 rounded-full border border-warm-white/20 bg-warm-white/12 p-3 text-warm-white shadow-soft backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:bg-warm-white hover:text-charcoal md:grid"
+      >
+        <ChevronDown className="size-5 animate-bounce" aria-hidden="true" />
+      </a>
+    </section>
+  );
+}
+
 function HeroFaceVisual() {
   return (
     <Reveal delay={0.12} className="relative">
@@ -64,7 +127,6 @@ function HeroFaceVisual() {
           src="/images/luxury-clinic-hero-face.jpg"
           alt="امرأة بإطلالة راقية داخل عيادة تجميل فاخرة"
           fill
-          priority
           sizes="(min-width: 1024px) 48vw, 100vw"
           className="object-cover object-[50%_42%]"
         />
@@ -103,9 +165,11 @@ function HeroStats({ className = "" }: { className?: string }) {
 export default function HomePage() {
   return (
     <>
-      <section className="medical-gradient noise-layer relative isolate overflow-hidden border-b border-line">
+      <CinematicVideoHero />
+
+      <section className="medical-gradient noise-layer relative isolate overflow-hidden border-b border-line" id="brand-intro">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(245,215,215,0.72),transparent_34%),radial-gradient(circle_at_18%_72%,rgba(237,243,239,0.8),transparent_34%)]" />
-        <div className="luxury-container relative z-10 grid min-h-[calc(90svh-80px)] items-center gap-10 py-14 md:py-20 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="luxury-container relative z-10 grid items-center gap-10 py-20 md:py-28 lg:grid-cols-[0.95fr_1.05fr]">
           <Reveal className="max-w-4xl">
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-rosegold/25 bg-warm-white/70 px-4 py-2 text-sm font-black text-rosegold shadow-soft">
               <Sparkles className="size-4" aria-hidden="true" />
@@ -129,17 +193,6 @@ export default function HomePage() {
           </Reveal>
           <HeroFaceVisual />
           <HeroStats className="sm:hidden" />
-        </div>
-      </section>
-
-      <section className="luxury-container py-20 md:py-28" id="interactive-face">
-        <SectionHeader
-          eyebrow="تجربة لوميرا التفاعلية"
-          title="استكشفي ملامحك عبر وجه تفاعلي مصمم لخدمات التجميل."
-          description="اختاري الأنف، الشفاه، الخدود، الفك، الذقن، الجبهة، تحت العين، الحواجب أو نضارة الوجه لعرض الخدمة المناسبة وسعرها التقريبي."
-        />
-        <div className="mt-12">
-          <InteractiveFace />
         </div>
       </section>
 
@@ -209,6 +262,17 @@ export default function HomePage() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="luxury-container py-20 md:py-28" id="interactive-face">
+        <SectionHeader
+          eyebrow="تجربة لوميرا التفاعلية"
+          title="استكشفي ملامحك عبر وجه تفاعلي مصمم لخدمات التجميل."
+          description="اختاري الأنف، الشفاه، الخدود، الفك، الذقن، الجبهة، تحت العين، الحواجب أو نضارة الوجه لعرض الخدمة المناسبة وسعرها التقريبي."
+        />
+        <div className="mt-12">
+          <InteractiveFace />
         </div>
       </section>
 

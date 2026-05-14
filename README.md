@@ -6,7 +6,7 @@ Luxury Arabic RTL website for a premium facial aesthetic clinic in Amman, Jordan
 
 This project is a production-ready Next.js website for **لوميرا كلينك**, a fictional premium aesthetic clinic brand. The site is Arabic-only, fully RTL, responsive, SEO-ready, and prepared for Vercel deployment.
 
-The main creative feature is an interactive face consultation experience where visitors can select facial areas such as the nose, lips, cheeks, jawline, chin, forehead, under eyes, eyebrows, and full-face glow to view service information and approximate JOD pricing.
+The homepage opens with a cinematic looping brand video, followed by the existing luxury clinic intro and an interactive face consultation experience where visitors can select facial areas such as the nose, lips, cheeks, jawline, chin, forehead, under eyes, eyebrows, and full-face glow to view service information and approximate JOD pricing.
 
 ## Tech Stack
 
@@ -44,6 +44,22 @@ npm run lint
 npm run type-check
 npm run build
 ```
+
+## Cinematic Homepage Video
+
+The homepage intro video lives at:
+
+```bash
+public/videos/lumera-cinematic-hero-loop-4k.mp4
+```
+
+It is rendered with a standard HTML `<video>` element using autoplay, muted, loop, playsInline, object-cover, and `preload="metadata"` for a production-friendly first load. The poster fallback is:
+
+```bash
+public/images/luxury-hero-clinic-blonde.jpg
+```
+
+To update the video later, replace the MP4 at the same path. Keep the filename and aspect ratio similar to avoid layout changes.
 
 ## Deploy To Vercel
 
@@ -107,7 +123,7 @@ The face experience is implemented in:
 src/components/interactive-face/interactive-face.tsx
 ```
 
-The SVG face is custom-built with gradients, highlights, and accessible hotspot buttons. Hotspots are configured in:
+The face map uses a premium image with accessible positioned hotspot buttons, cinematic focus movement, and a service detail panel. Hotspots are configured in:
 
 ```bash
 src/data/services.ts
